@@ -19,7 +19,7 @@ function dragDropped(e){
 }
 
 function dragStart(e) {
-	console.log(e)
+	console.log(e.path[0])
   this.className += ' hold';
   setTimeout(() => (this.className = 'invisible'), 0);
 }
