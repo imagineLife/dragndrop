@@ -77,13 +77,12 @@ class ThisApp extends React.Component {
     render() {
 
     	let theseBoxes = this.state.boxes.map((b) => {
-    		let filledClass = (b.filled) ? "filled" : null
-    		return <Box key={b.id} boxID={b.id} filledClass={filledClass}/>
+    		return <Box key={b.id} boxID={b.id} boxFilled={b.filled}/>
     	})
         return <div>
             <Header/>
             <div className="container">
-                <h1>Hello {this.props.name}</h1>
+                <h1 style={{color: 'white'}}>Hello {this.props.name}</h1>
                 {theseBoxes}
             </div>
         </div>
