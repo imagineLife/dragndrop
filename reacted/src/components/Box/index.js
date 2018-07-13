@@ -7,16 +7,25 @@ export default function Box(props){
 
 	var classes = `${filled}`;
 
-	console.log(props.dragEv)
+	// console.log(props.dragEv)
 	if(props.boxFilled){
 		return(
-			<div onDragOver={props.dragEv} id={props.boxID} className={classes}>
+			<div 
+				onDragOver={props.dragOv}
+				onDragEnter={props.dragEnt}
+				id={props.boxID}
+				className={classes}>
 				<BoxContent />
 			</div>
 		)
 	}else{
 		return(
-			<div onDragOver={props.dragEv} id={props.boxID} className={classes}></div>
+			<div 
+				onDragOver={props.dragOv} 
+				onDragEnter={props.dragEnt}
+				id={props.boxID} 
+				className={classes}>
+			</div>
 		)
 	}
 }
