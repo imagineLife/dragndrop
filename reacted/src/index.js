@@ -11,19 +11,24 @@ class ThisApp extends React.Component {
 			boxes : [
 				{
 					id:1,
-					filled: true
+					filled: true,
+					cls: 'empty'
 				},
 				{
-					id:2
+					id:2,
+					cls: 'empty'				
 				},
 				{
-					id:3
+					id:3,
+					cls: 'empty'				
 				},
 				{
-					id:4
+					id:4,
+					cls: 'empty'
 				},
 				{
-					id:5
+					id:5,
+					cls: 'empty'					
 				},
 			]
 		}
@@ -37,12 +42,27 @@ class ThisApp extends React.Component {
 	}
 
 	dragEntered(e){
-		console.log('dragEntered!')
 		e.preventDefault();
-		this.className += ' hovered'
+
+		console.log('dragEntered!')
+		//get this divId
+		let thisDivID = parseInt(e.target.id);
+		
+		//update state...
+		this.setState((curState) => {
+			//find this box in current state
+			const thisBoxInState = curState.boxes.find((b) => b.id == thisDivID )
+			//set the class name of this box
+			thisBoxInState.cls = 'empty hovered'
+			//return the initial state
+			return { boxes: curState.boxes }
+		})
+
 	}
 
     render() {
+    	console.log('rendering!')
+    	console.log(this.state.boxes)
 
     	let theseBoxes = this.state.boxes.map((b) => {
     		return <Box 
@@ -51,6 +71,7 @@ class ThisApp extends React.Component {
     			key={b.id}
     			boxID={b.id} 
     			boxFilled={b.filled}
+    			classProp={b.cls}
     		/>
     	})
         return <div>
@@ -93,8 +114,6 @@ function endDragging(e){
 
 const filled = document.querySelector('.fill');
 const empties = document.querySelectorAll('.empty');
-console.log('empties -->')
-console.log(empties)
 
 //Listeners for filled boxes
 filled.addEventListener('dragstart', dragStart);
@@ -102,7 +121,7 @@ filled.addEventListener('dragend', endDragging)
 
 //Listeners for empty boxes
 for(let emp of empties){
-	emp.addEventListener('dragenter', dragEntered);
+	// emp.addEventListener('dragenter', dragEntered);
 	emp.addEventListener('dragleave', dragLeft);
 	emp.addEventListener('drop', dragDropped);
 }
