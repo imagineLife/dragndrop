@@ -27,12 +27,19 @@ class ThisApp extends React.Component {
 				},
 			]
 		}
+
+		this.draggedOver = this.draggedOver.bind(this)
+	}
+
+	draggedOver(e){
+		console.log('dragOver!')
+		e.preventDefault();
 	}
 
     render() {
 
     	let theseBoxes = this.state.boxes.map((b) => {
-    		return <Box key={b.id} boxID={b.id} boxFilled={b.filled}/>
+    		return <Box dragEv={this.draggedOver} key={b.id} boxID={b.id} boxFilled={b.filled}/>
     	})
         return <div>
             <Header/>
@@ -47,11 +54,6 @@ class ThisApp extends React.Component {
 let App = document.getElementById("app");
 
 ReactDOM.render(<ThisApp name="Jake!" />, App);
-
-
-function draggedOver(e){
-	e.preventDefault();
-}
 
 function dragEntered(e){
 	e.preventDefault();
@@ -68,13 +70,17 @@ function dragDropped(e){
 }
 
 function dragStart(e) {
-	console.log(e.path[0])
   this.className += ' hold';
   setTimeout(() => (this.className = 'invisible'), 0);
 }
 
 function endDragging(e){
 	this.className = 'fill';
+}
+
+function draggedOver(e){
+	console.log('dragOver!')
+	e.preventDefault();
 }
 
 const filled = document.querySelector('.fill');
@@ -88,7 +94,7 @@ filled.addEventListener('dragend', endDragging)
 
 //Listeners for empty boxes
 for(let emp of empties){
-	emp.addEventListener('dragover', draggedOver);
+	// emp.addEventListener('dragover', draggedOver);
 	emp.addEventListener('dragenter', dragEntered);
 	emp.addEventListener('dragleave', dragLeft);
 	emp.addEventListener('drop', dragDropped);
