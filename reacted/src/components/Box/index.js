@@ -3,18 +3,13 @@ import './Box.css';
 import BoxContent from '../BoxContent'
 
 export default function Box(props){
-	let filled = (props.filledClass) ? props.filledClass : 'empty';
-
-	var classes = `${filled}`;
-
-	// console.log(props.dragEv)
 	if(props.boxFilled){
 		return(
 			<div 
 				onDragOver={props.dragOv}
 				onDragEnter={props.dragEnt}
 				id={props.boxID}
-				className={classes}>
+				className={props.classProp}>
 				<BoxContent />
 			</div>
 		)
@@ -24,7 +19,7 @@ export default function Box(props){
 				onDragOver={props.dragOv} 
 				onDragEnter={props.dragEnt}
 				id={props.boxID} 
-				className={classes}>
+				className={props.classProp}>
 			</div>
 		)
 	}
