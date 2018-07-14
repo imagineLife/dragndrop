@@ -36,6 +36,7 @@ class ThisApp extends React.Component {
 		this.draggedOver = this.draggedOver.bind(this)
 		this.dragEntered = this.dragEntered.bind(this)
 		this.dragLeft = this.dragLeft.bind(this)
+		this.dragDropped = this.dragDropped.bind(this)
 	}
 
 	draggedOver(e){
@@ -45,20 +46,15 @@ class ThisApp extends React.Component {
 	dragEntered(e){
 		e.preventDefault();
 
-		console.log('dragEntered!')
 		//get this divId
 		let thisDivID = parseInt(e.target.id);
-		// console.log(thisDivID)
 		
 		//update state...
 		this.setState((curState) => {
 			//find this box in current state
 			const thisBoxInState = curState.boxes.find((b) => b.id == thisDivID )
 			//set the class name of this box
-			console.log('thisBoxInState')
-			console.log(thisBoxInState)
 			thisBoxInState.cls = 'empty hovered'
-			console.log(thisBoxInState)
 			//return the initial state
 			return ({ boxes: Object.assign(curState.boxes,thisBoxInState) })
 		})
@@ -67,6 +63,7 @@ class ThisApp extends React.Component {
 
 	dragLeft(e){
 		console.log('react dragLeft')
+		//get this divId
 		let thisDivID = parseInt(e.target.id);
 
 		//update state...
@@ -74,10 +71,24 @@ class ThisApp extends React.Component {
 			//find this box in current state
 			const thisBoxInState = curState.boxes.find((b) => b.id == thisDivID )
 			//set the class name of this box
-			console.log('thisBoxInState')
-			console.log(thisBoxInState)
 			thisBoxInState.cls = 'empty'
-			console.log(thisBoxInState)
+			//return the initial state
+			return ({ boxes: Object.assign(curState.boxes,thisBoxInState) })
+		})
+	}
+
+	dragDropped(e){
+		console.log('react dragDropped')
+		//get this divId
+		let thisDivID = parseInt(e.target.id);
+
+		//update state...
+		this.setState((curState) => {
+			//find this box in current state
+			const thisBoxInState = curState.boxes.find((b) => b.id == thisDivID )
+			//set the class name of this box
+			thisBoxInState.cls = 'empty'
+			thisBoxInState.filled = true
 			//return the initial state
 			return ({ boxes: Object.assign(curState.boxes,thisBoxInState) })
 		})
@@ -85,13 +96,13 @@ class ThisApp extends React.Component {
 
     render() {
     	console.log('rendering!')
-    	// console.log(this.state.boxes)
 
     	let theseBoxes = this.state.boxes.map((b) => {
     		return <Box 
     			dragEnt={this.dragEntered} 
     			dragLft={this.dragLeft} 
     			dragOv={this.draggedOver} 
+    			dragDr={this.dragDropped} 
     			key={b.id}
     			boxID={b.id} 
     			boxFilled={b.filled}
@@ -125,6 +136,8 @@ function dragLeft(e){
 function dragDropped(e){
 	this.className = 'empty';
 	this.append(filled);
+	console.log('dropped')
+	console.log(this)
 }
 
 function dragStart(e) {
@@ -147,7 +160,7 @@ filled.addEventListener('dragend', endDragging)
 //Listeners for empty boxes
 for(let emp of empties){
 	// emp.addEventListener('dragleave', dragLeft);
-	emp.addEventListener('drop', dragDropped);
+	// emp.addEventListener('drop', dragDropped);
 }
 
 
