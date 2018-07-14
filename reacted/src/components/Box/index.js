@@ -8,6 +8,7 @@ export default function Box(props){
 			<div 
 				onDragOver={props.dragOv}
 				onDragEnter={props.dragEnt}
+				onDragLeave={props.dragLft}
 				id={props.boxID}
 				className={props.classProp}>
 				<BoxContent />
@@ -17,6 +18,7 @@ export default function Box(props){
 		return(
 			<div 
 				onDragOver={props.dragOv} 
+				onDragLeave={props.dragLft}
 				onDragEnter={props.dragEnt}
 				id={props.boxID} 
 				className={props.classProp}>

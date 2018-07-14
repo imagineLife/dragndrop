@@ -35,6 +35,7 @@ class ThisApp extends React.Component {
 
 		this.draggedOver = this.draggedOver.bind(this)
 		this.dragEntered = this.dragEntered.bind(this)
+		this.dragLeft = this.dragLeft.bind(this)
 	}
 
 	draggedOver(e){
@@ -47,26 +48,49 @@ class ThisApp extends React.Component {
 		console.log('dragEntered!')
 		//get this divId
 		let thisDivID = parseInt(e.target.id);
+		// console.log(thisDivID)
 		
 		//update state...
 		this.setState((curState) => {
 			//find this box in current state
 			const thisBoxInState = curState.boxes.find((b) => b.id == thisDivID )
 			//set the class name of this box
+			console.log('thisBoxInState')
+			console.log(thisBoxInState)
 			thisBoxInState.cls = 'empty hovered'
+			console.log(thisBoxInState)
 			//return the initial state
-			return { boxes: curState.boxes }
+			return ({ boxes: Object.assign(curState.boxes,thisBoxInState) })
 		})
 
 	}
 
+	dragLeft(e){
+		console.log('react dragLeft')
+		let thisDivID = parseInt(e.target.id);
+
+		//update state...
+		this.setState((curState) => {
+			//find this box in current state
+			const thisBoxInState = curState.boxes.find((b) => b.id == thisDivID )
+			//set the class name of this box
+			console.log('thisBoxInState')
+			console.log(thisBoxInState)
+			thisBoxInState.cls = 'empty'
+			console.log(thisBoxInState)
+			//return the initial state
+			return ({ boxes: Object.assign(curState.boxes,thisBoxInState) })
+		})
+	}
+
     render() {
     	console.log('rendering!')
-    	console.log(this.state.boxes)
+    	// console.log(this.state.boxes)
 
     	let theseBoxes = this.state.boxes.map((b) => {
     		return <Box 
     			dragEnt={this.dragEntered} 
+    			dragLft={this.dragLeft} 
     			dragOv={this.draggedOver} 
     			key={b.id}
     			boxID={b.id} 
@@ -74,7 +98,7 @@ class ThisApp extends React.Component {
     			classProp={b.cls}
     		/>
     	})
-        return <div>
+        return <div>			
             <Header/>
             <div className="container">
                 <h1 style={{color: 'white'}}>Hello {this.props.name}</h1>
@@ -94,6 +118,7 @@ function dragEntered(e){
 }
 
 function dragLeft(e){
+	console.log('dragLeft')
 	this.className = 'empty';
 }
 
@@ -121,8 +146,7 @@ filled.addEventListener('dragend', endDragging)
 
 //Listeners for empty boxes
 for(let emp of empties){
-	// emp.addEventListener('dragenter', dragEntered);
-	emp.addEventListener('dragleave', dragLeft);
+	// emp.addEventListener('dragleave', dragLeft);
 	emp.addEventListener('drop', dragDropped);
 }
 
