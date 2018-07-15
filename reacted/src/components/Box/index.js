@@ -10,6 +10,7 @@ export default function Box(props){
 				className={props.classProp}>
 				<BoxContent 
 					filledID={props.filledID}
+					filledClass={props.filledClass}
 					dragStart={props.filledStart}
 				/>
 			</div>

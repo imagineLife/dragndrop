@@ -7,7 +7,7 @@ export default function BoxContent(props){
 		<div 
 			id={props.filledID} 
 			onDragStart={props.dragStart} 
-			className="fill" 
+			className={props.filledClass}
 			draggable="true"
 			></div>
 	)

@@ -31,7 +31,8 @@ class ThisApp extends React.Component {
 					cls: 'empty'					
 				},
 			],
-			filledID : 'thisID'
+			filledID : 'thisID',
+			filledClass: 'fill'
 		}
 
 		this.draggedOver = this.draggedOver.bind(this)
@@ -39,6 +40,7 @@ class ThisApp extends React.Component {
 		this.dragLeft = this.dragLeft.bind(this)
 		this.dragDropped = this.dragDropped.bind(this)
 		this.dragStart = this.dragStart.bind(this)
+		this.setToInvisible = this.setToInvisible.bind(this)
 	}
 
 	draggedOver(e){
@@ -120,6 +122,14 @@ class ThisApp extends React.Component {
 		})
 	}
 
+	setToInvisible(){
+		console.log('setting invisible!!')
+		this.setState((curState) => {
+			//return an updated state
+			return ({ filledID: 'invisible' })
+		})
+	}
+
 	dragStart(e) {
 		console.log('dragStart')
 		//get this divId
@@ -131,7 +141,7 @@ class ThisApp extends React.Component {
 		})
 
 	  // setTimeout(() => (this.className = 'invisible'), 0);
-	  //setTimeout(() => (this.setToInvisible()), 0);
+	  	setTimeout(() => (this.setToInvisible), 0);
 	}
 
     render() {
@@ -149,6 +159,7 @@ class ThisApp extends React.Component {
     			boxFilled={b.filled}
     			classProp={b.cls}
     			filledID={this.state.filledID}
+    			filledClass={this.state.filledClass}
     			filledStart={this.dragStart}
     		/>
     	})
