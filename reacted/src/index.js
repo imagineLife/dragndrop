@@ -30,13 +30,15 @@ class ThisApp extends React.Component {
 					id:5,
 					cls: 'empty'					
 				},
-			]
+			],
+			filledID : 'thisID'
 		}
 
 		this.draggedOver = this.draggedOver.bind(this)
 		this.dragEntered = this.dragEntered.bind(this)
 		this.dragLeft = this.dragLeft.bind(this)
 		this.dragDropped = this.dragDropped.bind(this)
+		this.dragStart = this.dragStart.bind(this)
 	}
 
 	draggedOver(e){
@@ -48,12 +50,16 @@ class ThisApp extends React.Component {
 
 		//get this divId
 		let thisDivID = parseInt(e.target.id);
+		console.log('drag entered thisDivID')
+		console.log(e.target.id)
 		
 		//update state...
 		this.setState((curState) => {
 			//find this box in current state
-			const thisBoxInState = curState.boxes.find((b) => b.id == thisDivID )
+			const thisBoxInState = curState.boxes.find((b) => b.id === thisDivID )
 			//set the class name of this box
+			console.log('drag Entered thisBoxInState')
+			console.log(thisBoxInState)
 			thisBoxInState.cls = 'empty hovered'
 			//return the initial state
 			return ({ boxes: Object.assign(curState.boxes,thisBoxInState) })
@@ -82,20 +88,48 @@ class ThisApp extends React.Component {
 		//get this divId
 		let thisDivID = parseInt(e.target.id);
 
-		//update state...
+		console.log(`toggling ${thisDivID}`)
 		this.setState((curState) => {
-			//find this box in current state
-			const thisBoxInState = curState.boxes.find((b) => b.id == thisDivID )
-			//set the class name of this box
-			thisBoxInState.cls = 'empty'
-			thisBoxInState.filled = true
-			//return the initial state
-			return ({ boxes: Object.assign(curState.boxes,thisBoxInState) })
+			const thisBoxInState = curState.boxes.find((per) => per.id === thisDivID)
+			console.log(`found in current state`)
+			console.log(thisBoxInState)
+			return {
+				boxes: curState.boxes
+					.map((curStateBox) => {
+						console.log('MAPPING curState')
+						console.log(curStateBox)
+						if(curStateBox.id != thisDivID){
+							console.log('MAPPING curStateBox NOT THIS BOX')
+							console.log(curStateBox)
+							return({
+								id: curStateBox.id,
+								filled: false,
+								cls: 'empty'
+							})
+						}else{
+							console.log('MAPPING curStateBox IS THIS BOX')
+							console.log(curStateBox)
+							return({
+								id: thisDivID,
+								filled: true,
+								cls: 'empty'
+							})
+						}
+					})
+			}
 		})
 	}
 
+	dragStart(e) {
+		console.log('dragStart')
+		console.log(e.target)
+		// this.className += ' hold';
+	  // setTimeout(() => (this.className = 'invisible'), 0);
+	}
+
     render() {
-    	console.log('rendering!')
+    	console.log('rendering STATE!')
+    	console.log(this.state)
 
     	let theseBoxes = this.state.boxes.map((b) => {
     		return <Box 
@@ -107,6 +141,8 @@ class ThisApp extends React.Component {
     			boxID={b.id} 
     			boxFilled={b.filled}
     			classProp={b.cls}
+    			filledID={this.state.filledID}
+    			filledStart={this.dragStart}
     		/>
     	})
         return <div>			
@@ -123,45 +159,15 @@ let App = document.getElementById("app");
 
 ReactDOM.render(<ThisApp name="Jake!" />, App);
 
-function dragEntered(e){
-	e.preventDefault();
-	this.className += ' hovered'
-}
-
-function dragLeft(e){
-	console.log('dragLeft')
-	this.className = 'empty';
-}
-
-function dragDropped(e){
-	this.className = 'empty';
-	this.append(filled);
-	console.log('dropped')
-	console.log(this)
-}
-
-function dragStart(e) {
-  this.className += ' hold';
-  setTimeout(() => (this.className = 'invisible'), 0);
-}
-
 function endDragging(e){
+	console.log('JQ drag ending')
+	console.log(this)
 	this.className = 'fill';
 }
 
 
 const filled = document.querySelector('.fill');
-const empties = document.querySelectorAll('.empty');
 
 //Listeners for filled boxes
-filled.addEventListener('dragstart', dragStart);
+// filled.addEventListener('dragstart', dragStart);
 filled.addEventListener('dragend', endDragging)
-
-//Listeners for empty boxes
-for(let emp of empties){
-	// emp.addEventListener('dragleave', dragLeft);
-	// emp.addEventListener('drop', dragDropped);
-}
-
-
-
