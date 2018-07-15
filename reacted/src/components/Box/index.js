@@ -6,13 +6,12 @@ export default function Box(props){
 	if(props.boxFilled){
 		return(
 			<div 
-				onDragOver={props.dragOv}
-				onDragEnter={props.dragEnt}
-				onDragLeave={props.dragLft}
-				onDrop={props.dragDr}
 				id={props.boxID}
 				className={props.classProp}>
-				<BoxContent />
+				<BoxContent 
+					filledID={props.filledID}
+					dragStart={props.filledStart}
+				/>
 			</div>
 		)
 	}else{
