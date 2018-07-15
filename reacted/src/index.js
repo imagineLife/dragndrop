@@ -122,9 +122,16 @@ class ThisApp extends React.Component {
 
 	dragStart(e) {
 		console.log('dragStart')
-		console.log(e.target)
-		// this.className += ' hold';
+		//get this divId
+		let thisDivID = e.target.id;
+		//update state...
+		this.setState((curState) => {
+			//return an updated state
+			return ({ filledID: curState.filledID += ' hold' })
+		})
+
 	  // setTimeout(() => (this.className = 'invisible'), 0);
+	  //setTimeout(() => (this.setToInvisible()), 0);
 	}
 
     render() {
