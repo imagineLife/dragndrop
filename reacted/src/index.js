@@ -35,6 +35,7 @@ class ThisApp extends React.Component {
 			filledClass: 'fill'
 		}
 
+		this.dragEnded = this.dragEnded.bind(this)
 		this.draggedOver = this.draggedOver.bind(this)
 		this.dragEntered = this.dragEntered.bind(this)
 		this.dragLeft = this.dragLeft.bind(this)
@@ -52,22 +53,28 @@ class ThisApp extends React.Component {
 
 		//get this divId
 		let thisDivID = parseInt(e.target.id);
-		console.log('drag entered thisDivID')
-		console.log(e.target.id)
 		
 		//update state...
 		this.setState((curState) => {
 			//find this box in current state
 			const thisBoxInState = curState.boxes.find((b) => b.id === thisDivID )
 			//set the class name of this box
-			console.log('drag Entered thisBoxInState')
-			console.log(thisBoxInState)
 			thisBoxInState.cls = 'empty hovered'
 			//return the initial state
 			return ({ boxes: Object.assign(curState.boxes,thisBoxInState) })
 		})
 
 	}
+
+	dragEnded(e){
+		console.log('DRAG ENDED!!');
+		// this.className = 'fill';
+
+		let thisDivID = parseInt(e.target.id);
+
+		this.setState({ filledClass: 'fill' })
+
+	 }
 
 	dragLeft(e){
 		console.log('react dragLeft')
@@ -93,40 +100,36 @@ class ThisApp extends React.Component {
 		console.log(`toggling ${thisDivID}`)
 		this.setState((curState) => {
 			const thisBoxInState = curState.boxes.find((per) => per.id === thisDivID)
-			console.log(`found in current state`)
-			console.log(thisBoxInState)
+
 			return {
 				boxes: curState.boxes
 					.map((curStateBox) => {
-						console.log('MAPPING curState')
-						console.log(curStateBox)
+
 						if(curStateBox.id != thisDivID){
-							console.log('MAPPING curStateBox NOT THIS BOX')
-							console.log(curStateBox)
 							return({
 								id: curStateBox.id,
 								filled: false,
 								cls: 'empty'
 							})
 						}else{
-							console.log('MAPPING curStateBox IS THIS BOX')
-							console.log(curStateBox)
 							return({
 								id: thisDivID,
 								filled: true,
 								cls: 'empty'
 							})
 						}
-					})
+					}),
+				filledClass: 'fill'
+
 			}
 		})
 	}
 
 	setToInvisible(){
-		console.log('setting invisible!!')
-		this.setState((curState) => {
+		this.setState(() => {
+			console.log('setting invisible!')
 			//return an updated state
-			return ({ filledID: 'invisible' })
+			return ({ filledClass: 'invisible' })
 		})
 	}
 
@@ -137,11 +140,10 @@ class ThisApp extends React.Component {
 		//update state...
 		this.setState((curState) => {
 			//return an updated state
-			return ({ filledID: curState.filledID += ' hold' })
+			return ({ filledClass: curState.filledClass += ' hold' })
 		})
 
-	  // setTimeout(() => (this.className = 'invisible'), 0);
-	  	setTimeout(() => (this.setToInvisible), 0);
+	  	setTimeout(() => this.setToInvisible(), 0);
 	}
 
     render() {
@@ -161,6 +163,7 @@ class ThisApp extends React.Component {
     			filledID={this.state.filledID}
     			filledClass={this.state.filledClass}
     			filledStart={this.dragStart}
+    			filledEnd={this.dragEnded}
     		/>
     	})
         return <div>			
@@ -177,15 +180,15 @@ let App = document.getElementById("app");
 
 ReactDOM.render(<ThisApp name="Jake!" />, App);
 
-function endDragging(e){
+ function endDragging(e){
 	console.log('JQ drag ending')
 	console.log(this)
 	this.className = 'fill';
-}
+ }
 
 
 const filled = document.querySelector('.fill');
 
 //Listeners for filled boxes
 // filled.addEventListener('dragstart', dragStart);
-filled.addEventListener('dragend', endDragging)
+// filled.addEventListener('dragend', endDragging)
